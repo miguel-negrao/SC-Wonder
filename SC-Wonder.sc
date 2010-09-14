@@ -20,8 +20,13 @@ WonderBus {
 	}
 	
 	free{
-		("WonderBus: freeing index "++index).postln;
-		WonderCtrl.allocator.free(index);
+		if(index.isNil)
+			{ ("WonderBus has already been freed").warn; }
+			{
+				("WonderBus: freeing index "++index).postln;
+				WonderCtrl.allocator.free(index);
+				index = nil;
+			}
 	}
 }
 
@@ -39,6 +44,7 @@ WonderCtrl{
 			.numWireBufs_(1024)
 			.numOutputBusChannels_(42)
 			.remoteControlVolume_(true);
+			
 		server = Server("wonderSCSynth",NetAddr(scsynthIP.asString,scsynthPort),options);
 		if(scsynthIP == '127.0.0.1'){
 			server.boot
