@@ -39,9 +39,8 @@ WonderCtrl{
 	*startup{ |startIndex = 0,size = 42,scsynthIP = '127.0.0.1',scsynthPort = 57119,makeDefault = true|
 	
 		var cwonderIP = "192.168.3.254",cwonderPort = 12222, options;
-		allocator = ContiguousBlockAllocator(size,startIndex);
+		allocator = ContiguousBlockAllocator(size+startIndex,startIndex);
 		addr = NetAddr(cwonderIP,cwonderPort);
-		size.do{ |i| addr.sendMsg('/WONDER/source/activate',startIndex+i) };
 		options = ServerOptions()
 			.numWireBufs_(1024)
 			.numOutputBusChannels_(42)
@@ -53,8 +52,9 @@ WonderCtrl{
 		};
 		server.makeWindow;
 		if(makeDefault){
-			Server.local = server
+			Server.default = server;
 		};
-	}	
+	}
+		
 	
 }
