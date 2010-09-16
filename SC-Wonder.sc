@@ -7,6 +7,7 @@ WonderBus {
 		if(i.notNil){
 			WonderCtrl.addr.sendMsg('/WONDER/source/type',i,plane.binaryValue);
 			WonderCtrl.addr.sendMsg('/WONDER/source/dopplerEffect',i,doppler.binaryValue);
+			WonderCtrl.addr.sendMsg('/WONDER/source/activate',i);
 			("creating Wonder WFS bus with index "++i).postln;
 			^super.newCopyArgs(i)
 		}{
@@ -24,6 +25,7 @@ WonderBus {
 			{ ("WonderBus has already been freed").warn; }
 			{
 				("WonderBus: freeing index "++index).postln;
+				WonderCtrl.addr.sendMsg('/WONDER/source/deactivate',index);
 				WonderCtrl.allocator.free(index);
 				index = nil;
 			}
